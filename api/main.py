@@ -94,6 +94,21 @@ async def get_uploaded_files():
         })
     return {"files": files}
 
+@app.delete("/files/{filename}", status_code=204)
+async def delete_file(filename: str):
+    """Delete an uploaded file from the index"""
+    print(search_engine.files_data)
+    if filename not in search_engine.files_data:
+        raise HTTPException(status_code=404, detail="File not found")
+
+    # Remove file from search engine's in-memory store
+    del search_engine.files_data[filename]
+    search_engine._update_vectors()  # Rebuild search vectors after deletion
+
+    return None
+
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
