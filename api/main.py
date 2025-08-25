@@ -4,9 +4,15 @@ from models import *
 from search_engine import SearchEngine
 from file_parser import FileParser
 import os
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 app = FastAPI(title="Mini Search System", version="1.0.0")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
+@app.get("/")
+async def serve_react():
+    return FileResponse(os.path.join("static", "index.html"))
 # Enable CORS
 app.add_middleware(
     CORSMiddleware,
@@ -29,19 +35,19 @@ async def upload_file(file: UploadFile = File(...)):
     """Upload and index a file"""
     if not file.filename:
         raise HTTPException(status_code=400, detail="No filename provided")
-    
+
     # Check file type
     file_extension = file.filename.split('.')[-1].lower()
     if file_extension not in ['txt', 'pdf', 'csv', 'json']:
         raise HTTPException(
-            status_code=400, 
+            status_code=400,
             detail="Unsupported file type. Please upload TXT, PDF, CSV, or JSON files."
         )
-    
+
     try:
         # Read file content
         content = await file.read()
-        
+
         # Parse file based on type
         if file_extension == 'txt':
             chunks = file_parser.parse_txt(content)
@@ -51,16 +57,16 @@ async def upload_file(file: UploadFile = File(...)):
             chunks = file_parser.parse_csv(content)
         elif file_extension == 'json':
             chunks = file_parser.parse_json(content)
-        
+
         # Add to search engine
         search_engine.add_file(file.filename, chunks)
-        
+
         return FileUploadResponse(
             filename=file.filename,
             status="success",
             chunks_created=len(chunks)
         )
-    
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing file: {str(e)}")
 
@@ -69,7 +75,7 @@ async def search_files(query: SearchQuery):
     """Search across all uploaded files"""
     if not query.query.strip():
         raise HTTPException(status_code=400, detail="Query cannot be empty")
-    
+
     try:
         results = search_engine.search(query.query.strip())
         return SearchResponse(**results)
