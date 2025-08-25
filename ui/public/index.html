@@ -5,6 +5,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mini Search Engine</title>
+   <style>
+        @font-face {
+            font-family: "myFirstFont";
+            /* Try these paths in order of preference: */
+            src: url("./fonts/Gilmer-Regular.otf") format("opentype"),
+                 url("../fonts/Gilmer-Regular.otf") format("opentype"),
+                 url("/fonts/Gilmer-Regular.otf") format("opentype");
+            font-display: swap; /* Improves loading performance */
+        }
+
+        html {
+            font-family: "myFirstFont", Arial, sans-serif; /* Fallback fonts */
+        }
+
+        /* Test element to verify font is working */
+        .font-test {
+            font-size: 24px;
+            margin: 20px;
+            padding: 20px;
+            border: 2px solid #ccc;
+            background: #f9f9f9;
+        }
+    </style>
 </head>
 
 <body>
