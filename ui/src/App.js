@@ -43,7 +43,7 @@ function App() {
 
     const fetchSearchHistory = async () => {
         try {
-            const response = await fetch('/search-history');
+            const response = await fetch('http://localhost:8000/search-history');
             const data = await response.json();
             setSearchHistory(data.history);
         } catch (error) {
