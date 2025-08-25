@@ -7,15 +7,19 @@ import {
     createTheme,
     CssBaseline,
     Paper,
-    Divider,
-    Button
+    Button,
+    GlobalStyles
 } from '@mui/material';
 import FileUpload from './components/FileUpload';
 import SearchBar from './components/SearchBar';
 import SearchHistory from './components/SearchHistory';
 import SearchResults from './components/SearchResults';
 
+// ✅ Theme with Gilmer font
 const theme = createTheme({
+    typography: {
+        fontFamily: 'Gilmer, Arial, sans-serif',
+    },
     palette: {
         primary: {
             main: '#1976d2',
@@ -66,8 +70,8 @@ function App() {
                 method: 'DELETE',
             });
             if (response.ok) {
-                fetchUploadedFiles();   // Refresh the uploaded files list
-                setSearchResults(null); // Optional: clear search results related to deleted files
+                fetchUploadedFiles();
+                setSearchResults(null);
             } else {
                 alert('Failed to delete the file.');
             }
@@ -92,7 +96,7 @@ function App() {
             if (response.ok) {
                 const data = await response.json();
                 setSearchResults(data);
-                fetchSearchHistory(); // Refresh search history
+                fetchSearchHistory();
             } else {
                 console.error('Search failed');
             }
@@ -104,20 +108,62 @@ function App() {
     };
 
     const handleFileUpload = () => {
-        fetchUploadedFiles(); // Refresh file list after upload
+        fetchUploadedFiles();
     };
 
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
+
+            {/* ✅ Global Styles for Background & Font */}
+            <GlobalStyles styles={{
+                '@font-face': [
+                    {
+                        fontFamily: 'Gilmer',
+                        src: `
+                            url('/fonts/Gilmer-Regular.woff2') format('woff2'),
+                            url('/fonts/Gilmer-Regular.ttf') format('truetype')
+                        `,
+                        fontWeight: 400,
+                        fontStyle: 'normal',
+                    },
+                    {
+                        fontFamily: 'Gilmer',
+                        src: `
+                            url('/fonts/Gilmer-Bold.woff2') format('woff2'),
+                            url('/fonts/Gilmer-Bold.ttf') format('truetype')
+                        `,
+                        fontWeight: 700,
+                        fontStyle: 'normal',
+                    }
+                ],
+                body: {
+                    background: 'radial-gradient(circle at 0% 0%, #e4b795, #699acd, #2f679f)',
+                    minHeight: '100vh',
+                    margin: 0,
+                    fontFamily: 'Gilmer, Arial, sans-serif',
+                }
+            }} />
+
             <Container maxWidth="lg" sx={{ py: 4 }}>
-                <Typography variant="h3" component="h1" gutterBottom align="center" color="primary">
-                    📚 Knowledge Based Search System
+                {/* ✅ White Heading with 📚 */}
+                <Typography
+                    variant="h3"
+                    component="h1"
+                    gutterBottom
+                    align="center"
+                    sx={{
+                        color: '#fff',
+                        fontFamily: 'Gilmer, Arial, sans-serif',
+                        fontWeight: 700,
+                    }}
+                >
+                    📚 Mini Search Engine
                 </Typography>
 
+                {/* File Upload Section */}
                 <Paper elevation={2} sx={{ p: 3, mb: 3 }}>
                     <FileUpload onUploadSuccess={handleFileUpload} />
-
                     {uploadedFiles.length > 0 && (
                         <Box sx={{ mt: 2 }}>
                             <Typography variant="subtitle2" color="text.secondary" gutterBottom>
@@ -151,9 +197,9 @@ function App() {
                             </Box>
                         </Box>
                     )}
-
                 </Paper>
 
+                {/* Search Section */}
                 <Paper elevation={2} sx={{ p: 3, mb: 3 }}>
                     <SearchBar onSearch={handleSearch} loading={loading} />
                     <SearchHistory
@@ -162,6 +208,7 @@ function App() {
                     />
                 </Paper>
 
+                {/* Search Results */}
                 {searchResults && (
                     <SearchResults
                         results={searchResults}

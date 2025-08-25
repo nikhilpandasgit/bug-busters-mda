@@ -97,7 +97,6 @@ async def get_uploaded_files():
 @app.delete("/files/{filename}", status_code=204)
 async def delete_file(filename: str):
     """Delete an uploaded file from the index"""
-    print(search_engine.files_data)
     if filename not in search_engine.files_data:
         raise HTTPException(status_code=404, detail="File not found")
 
