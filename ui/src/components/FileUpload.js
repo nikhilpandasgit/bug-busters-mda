@@ -21,7 +21,7 @@ const FileUpload = ({ onUploadSuccess }) => {
     // Check file type
     const allowedTypes = ['txt', 'pdf', 'csv', 'json'];
     const fileExtension = file.name.split('.').pop().toLowerCase();
-    
+
     if (!allowedTypes.includes(fileExtension)) {
       setMessage('Please upload TXT, PDF, CSV, or JSON files only.');
       setMessageType('error');
@@ -35,7 +35,7 @@ const FileUpload = ({ onUploadSuccess }) => {
     formData.append('file', file);
 
     try {
-      const response = await fetch('http://localhost:8000/upload', {
+      const response = await fetch('https://mini-search-engine-17k8.onrender.com/upload', {
         method: 'POST',
         body: formData,
       });
@@ -65,7 +65,7 @@ const FileUpload = ({ onUploadSuccess }) => {
       <Typography variant="h6" gutterBottom>
         📁 Upload Knowledge Base Files
       </Typography>
-      
+
       <Box sx={{ mb: 2 }}>
         {['TXT', 'PDF', 'CSV', 'JSON'].map((type) => (
           <Chip key={type} label={type} size="small" sx={{ mr: 1 }} />
@@ -80,7 +80,7 @@ const FileUpload = ({ onUploadSuccess }) => {
         onChange={handleFileUpload}
         disabled={uploading}
       />
-      
+
       <label htmlFor="file-upload">
         <Button
           variant="contained"

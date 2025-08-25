@@ -43,7 +43,7 @@ function App() {
 
     const fetchSearchHistory = async () => {
         try {
-            const response = await fetch('http://localhost:8000/search-history');
+            const response = await fetch('https://mini-search-engine-17k8.onrender.com/search-history');
             const data = await response.json();
             setSearchHistory(data.history);
         } catch (error) {
@@ -53,7 +53,7 @@ function App() {
 
     const fetchUploadedFiles = async () => {
         try {
-            const response = await fetch('http://localhost:8000/files');
+            const response = await fetch('https://mini-search-engine-17k8.onrender.com/files');
             const data = await response.json();
             setUploadedFiles(data.files);
         } catch (error) {
@@ -66,7 +66,7 @@ function App() {
             return;
         }
         try {
-            const response = await fetch(`http://localhost:8000/files/${encodeURIComponent(filename)}`, {
+            const response = await fetch(`https://mini-search-engine-17k8.onrender.com/files/${encodeURIComponent(filename)}`, {
                 method: 'DELETE',
             });
             if (response.ok) {
@@ -85,7 +85,7 @@ function App() {
 
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:8000/search', {
+            const response = await fetch('https://mini-search-engine-17k8.onrender.com/search', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
