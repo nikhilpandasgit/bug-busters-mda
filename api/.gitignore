@@ -8,7 +8,7 @@ myenv/
 # Distribution / packaging
 *.egg-info/
 dist/
-build/
+
 
 # Pytest cache
 .pytest_cache/
